@@ -54,6 +54,7 @@ public class UserService {
     private UserDTO mapToDTO(final User user, final UserDTO userDTO) {
         userDTO.setId(user.getId());
         userDTO.setName(user.getName());
+        userDTO.setEmail(user.getEmail());
         userDTO.setAddress(user.getAddress());
         userDTO.setHousingType(user.getHousingType());
         userDTO.setHouseholdMembers(user.getHouseholdMembers());
@@ -62,6 +63,7 @@ public class UserService {
 
     private User mapToEntity(final UserDTO userDTO, final User user) {
         user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
         user.setAddress(userDTO.getAddress());
         user.setHousingType(userDTO.getHousingType());
         user.setHouseholdMembers(userDTO.getHouseholdMembers());

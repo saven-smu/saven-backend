@@ -1,6 +1,7 @@
 package io.bootify.saven.model;
 
 import java.util.UUID;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.Getter;
@@ -16,6 +17,11 @@ public class UserDTO {
     @NotNull
     @Size(max = 255)
     private String name;
+
+    @NotNull
+    @Email
+    @Size(max = 255)
+    private String email;
 
     @NotNull
     @Size(max = 255)

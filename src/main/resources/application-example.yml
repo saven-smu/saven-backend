@@ -1,4 +1,11 @@
+auth0:
+  audience: https://saven/api
 spring:
+  security:
+    oauth2:
+        resourceserver:
+            jwt:
+                issuer-uri: https://dev-mavyf0-a.us.auth0.com/
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/saven}
     username: ${JDBC_DATABASE_USERNAME:postgres}
@@ -20,3 +27,4 @@ spring:
           new_generator_mappings: true
 springdoc:
   pathsToMatch: /api/**
+

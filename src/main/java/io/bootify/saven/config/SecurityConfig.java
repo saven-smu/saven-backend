@@ -9,26 +9,32 @@ import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * Configures our application with Spring Security to restrict access to our API endpoints.
- */
+
 @EnableWebSecurity
 public class SecurityConfig {
 
+    
+   //APIs that don't need authentication
+   private static final String[] WHITE_LIST_URLS = {
+        "/api/leaderboards",
+        "/api/userLeaderboards/{\\d+}"
+   };
+   
    @Value("${auth0.audience}")
    private String audience;
-
+    
    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
    private String issuer;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        /*
-        This is where we configure the security required for our endpoints and setup our app to serve as
-        an OAuth2 Resource Server, using JWT validation.
-        */
-        http.authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+    
+        http    .authorizeRequests()
+                .antMatchers(WHITE_LIST_URLS).permitAll()
+                .and()
+                .authorizeRequests()
+                .anyRequest()
+                .authenticated()
                 .and().cors()
                 .and().oauth2ResourceServer().jwt();
         return http.build();
@@ -36,11 +42,7 @@ public class SecurityConfig {
 
     @Bean
     JwtDecoder jwtDecoder() {
-        /*
-        By default, Spring Security does not validate the "aud" claim of the token, to ensure that this token is
-        indeed intended for our app. Adding our own validator is easy to do:
-        */
-
+        
         NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
                 JwtDecoders.fromOidcIssuerLocation(issuer);
 

@@ -83,7 +83,7 @@ public class LeaderboardTest {
 	public void getLeaderboard_InvalidLeaderboardId_Failure() throws Exception {
 		URI uri = new URI(baseUrl + port + "/api/leaderboards/d0c9e19b-00b7-43b7-9880-7e28ccfd7bb9");
 
-		ResponseEntity<Leaderboard> result = restTemplate.getForEntity(uri, Leaderboard.class);
+		ResponseEntity<LeaderboardDTO> result = restTemplate.getForEntity(uri, LeaderboardDTO.class);
 
 		assertEquals(404, result.getStatusCode().value());
 	}

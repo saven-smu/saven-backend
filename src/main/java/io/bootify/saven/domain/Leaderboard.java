@@ -5,19 +5,23 @@ import java.util.Set;
 import java.util.UUID;
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-
 @Entity
 @Table(name = "leaderboards")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
+
 public class Leaderboard {
 
     @Id
@@ -40,4 +44,7 @@ public class Leaderboard {
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
 
+    public Leaderboard(int month) {
+        this.month = month;
+    }
 }

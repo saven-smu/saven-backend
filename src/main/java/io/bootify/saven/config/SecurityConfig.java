@@ -3,6 +3,7 @@ package io.bootify.saven.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
@@ -31,7 +32,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     
         http    .authorizeRequests()
-                .antMatchers(WHITE_LIST_URLS).permitAll()
+                .antMatchers(HttpMethod.GET, WHITE_LIST_URLS).permitAll()
                 .and()
                 .authorizeRequests()
                 .anyRequest()

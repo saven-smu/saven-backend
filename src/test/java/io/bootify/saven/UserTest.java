@@ -19,6 +19,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
@@ -67,7 +68,6 @@ public class UserTest {
 
 	@Test
 	public void addUserWithoutToken() throws Exception {
-
 		URI uri = new URI(baseUrl + port + "/api/users");
 
 		JSONObject jsonContent = new JSONObject();
@@ -218,7 +218,7 @@ public class UserTest {
 	}
 
 	@Test
-	public void deleteUserWithtToken() throws Exception {
+	public void deleteUserWithToken() throws Exception {
 		
 		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
 		users.save(userTest);

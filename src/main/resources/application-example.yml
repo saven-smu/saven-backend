@@ -1,11 +1,11 @@
 auth0:
-  audience: https://saven/api
+  audience: <<YOUR AUDIENCE>>
 spring:
   security:
     oauth2:
         resourceserver:
             jwt:
-                issuer-uri: https://dev-mavyf0-a.us.auth0.com/
+                issuer-uri: <<YOUR DOMAIN>>
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/saven}
     username: ${JDBC_DATABASE_USERNAME:postgres}

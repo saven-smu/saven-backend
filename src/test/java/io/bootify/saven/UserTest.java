@@ -79,14 +79,12 @@ public class UserTest {
 
 		RequestBuilder request = MockMvcRequestBuilders
 								.post(uri)
+								.with(SecurityMockMvcRequestPostProcessors.csrf())
 								.content(jsonContent.toJSONString())
 								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
-		assertEquals(403, response.getStatus());
-		//ResponseEntity<UserDTO> result = restTemplate.postForEntity(uri, jsonContent, UserDTO.class);
-
-		//assertEquals(401, result.getStatusCode().value());
+		assertEquals(401, response.getStatus());
 
 	}
 
@@ -162,11 +160,12 @@ public class UserTest {
 
 		RequestBuilder request = MockMvcRequestBuilders
 								.put(uri)
+								.with(SecurityMockMvcRequestPostProcessors.csrf())
 								.content(jsonContent.toJSONString())
 								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
-		assertEquals(403, response.getStatus());
+		assertEquals(401, response.getStatus());
 		
 	}
 
@@ -210,10 +209,11 @@ public class UserTest {
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
 
 		RequestBuilder request = MockMvcRequestBuilders
-								.delete(uri);
+								.delete(uri)
+								.with(SecurityMockMvcRequestPostProcessors.csrf());
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
-		assertEquals(403, response.getStatus());
+		assertEquals(401, response.getStatus());
 		
 	}
 

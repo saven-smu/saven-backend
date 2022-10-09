@@ -11,19 +11,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -33,7 +26,6 @@ import com.nimbusds.jose.shaded.json.JSONObject;
 import io.bootify.saven.domain.*;
 import io.bootify.saven.model.*;
 import io.bootify.saven.repos.*;
-import lombok.With;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -43,9 +35,6 @@ public class UserTest {
 	private int port;
 
 	private final String baseUrl = "http://localhost:";
-
-	@Autowired
-	private TestRestTemplate restTemplate;
 
 	@Autowired
 	private UserRepository users;
@@ -80,7 +69,7 @@ public class UserTest {
 		RequestBuilder request = MockMvcRequestBuilders
 								.post(uri)
 								.with(SecurityMockMvcRequestPostProcessors.csrf())
-								.content(jsonContent.toJSONString())
+								.content(jsonContent.toString())
 								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
@@ -103,7 +92,7 @@ public class UserTest {
 		RequestBuilder request = MockMvcRequestBuilders
 								.post(uri)
 								.with(SecurityMockMvcRequestPostProcessors.jwt())
-								.content(jsonContent.toJSONString())
+								.content(jsonContent.toString())
 								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
@@ -119,7 +108,7 @@ public class UserTest {
 		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
 		users.save(userTest);
 		
-		RequestBuilder request = MockMvcRequestBuilders.get(uri);
+		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.csrf());;
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 		
 		assertEquals(401, response.getStatus());
@@ -161,7 +150,7 @@ public class UserTest {
 		RequestBuilder request = MockMvcRequestBuilders
 								.put(uri)
 								.with(SecurityMockMvcRequestPostProcessors.csrf())
-								.content(jsonContent.toJSONString())
+								.content(jsonContent.toString())
 								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
@@ -186,7 +175,7 @@ public class UserTest {
 		RequestBuilder putRequest = MockMvcRequestBuilders
 								.put(uri)
 								.with(SecurityMockMvcRequestPostProcessors.jwt())
-								.content(jsonContent.toJSONString())
+								.content(jsonContent.toString())
 								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(putRequest).andReturn().getResponse();
 

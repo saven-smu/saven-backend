@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
 
-import org.json.*;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -133,19 +133,20 @@ public class LeaderboardTest {
 
 	@Test
 	public void addLeaderboardWithoutToken() throws Exception {
+		
 		URI uri = new URI(baseUrl + port + "/api/leaderboards");
 
 		JSONObject jsonContent = new JSONObject();
-		jsonContent.put("month", "1");
+		jsonContent.put("month", 1);
 
 		RequestBuilder request = MockMvcRequestBuilders
-				.post(uri)
-				.with(SecurityMockMvcRequestPostProcessors.csrf())
-				.content(jsonContent.toString())
-				.contentType(MediaType.APPLICATION_JSON);
+								.post(uri)
+								.with(SecurityMockMvcRequestPostProcessors.csrf())
+								.content(jsonContent.toJSONString())
+								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
-		assertEquals(401, response.getStatus()); // idk why its giving 201
+		assertEquals(401, response.getStatus());
 	}
 
 	@Test

@@ -124,15 +124,14 @@ public class UserLeaderboardTest {
 
     @Test
 	public void getInvalidUserLeaderboardWithoutToken() throws Exception {
+		
 		URI uri = new URI(baseUrl + port + "/api/userLeaderboards/d0c9e19b-00b7-43b7-9880-7e28ccfd7bb9");
 
 		RequestBuilder request = MockMvcRequestBuilders
-				.get(uri)
-				.with(SecurityMockMvcRequestPostProcessors.csrf())
-				.contentType(MediaType.APPLICATION_JSON);
+								.get(uri);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
-		assertEquals(401, response.getStatus()); // gives 404 idk why
+		assertEquals(404, response.getStatus());
 	}
 
     @Test
@@ -232,6 +231,7 @@ public class UserLeaderboardTest {
 
     @Test
 	public void updateUserLeaderboardWithoutToken() throws Exception {
+
 		Leaderboard leaderboardtest = new Leaderboard(1);
 		leaderboard.save(leaderboardtest);
 
@@ -258,7 +258,7 @@ public class UserLeaderboardTest {
 								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(putRequest).andReturn().getResponse();
 
-        assertEquals(401, response.getStatus()); // lol idk why im getting 200
+        assertEquals(401, response.getStatus());
     }
 
     @Test

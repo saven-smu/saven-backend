@@ -54,13 +54,17 @@ public class LeaderboardService {
     private LeaderboardDTO mapToDTO(final Leaderboard leaderboard,
             final LeaderboardDTO leaderboardDTO) {
         leaderboardDTO.setId(leaderboard.getId());
-        leaderboardDTO.setMonth(leaderboard.getMonth());
+        leaderboardDTO.setUtilityType(leaderboard.getUtilityType());
+        leaderboardDTO.setTimeWindow(leaderboard.getTimeWindow());
+        leaderboardDTO.setStoredDateTime(leaderboard.getStoredDateTime());
         return leaderboardDTO;
     }
 
     private Leaderboard mapToEntity(final LeaderboardDTO leaderboardDTO,
             final Leaderboard leaderboard) {
-        leaderboard.setMonth(leaderboardDTO.getMonth());
+        leaderboard.setUtilityType(leaderboard.getUtilityType());
+        leaderboard.setTimeWindow(leaderboard.getTimeWindow());
+        leaderboard.setStoredDateTime(leaderboard.getStoredDateTime());
         return leaderboard;
     }
 

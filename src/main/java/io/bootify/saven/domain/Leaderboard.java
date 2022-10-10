@@ -1,5 +1,6 @@
 package io.bootify.saven.domain;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Set;
 import java.util.UUID;
@@ -31,7 +32,13 @@ public class Leaderboard {
     private UUID id;
 
     @Column(nullable = false)
-    private Integer month;
+    private Integer utilityType;
+
+    @Column(nullable = false)
+    private Integer timeWindow;
+
+    @Column(nullable = false)
+    private LocalDateTime storedDateTime;
 
     @OneToMany(mappedBy = "leaderboard")
     private Set<UserLeaderboard> leaderboardUserLeaderboards;
@@ -43,8 +50,5 @@ public class Leaderboard {
     @LastModifiedDate
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
-
-    public Leaderboard(int month) {
-        this.month = month;
-    }
+    
 }

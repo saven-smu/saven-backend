@@ -58,7 +58,7 @@ public class LeaderboardTest {
 	public void getLeaderboardWithToken() throws Exception {
 		URI uri = new URI(baseUrl + port + "/api/leaderboards");
 
-		Leaderboard leaderboardtest = new Leaderboard(1);
+		Leaderboard leaderboardtest = new Leaderboard();
 		leaderboard.save(leaderboardtest);
 
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
@@ -75,7 +75,7 @@ public class LeaderboardTest {
 	public void getLeaderboardWithoutToken() throws Exception {
 		URI uri = new URI(baseUrl + port + "/api/leaderboards");
 
-		Leaderboard leaderboardtest = new Leaderboard(1);
+		Leaderboard leaderboardtest = new Leaderboard();
 		leaderboard.save(leaderboardtest);
 
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.csrf());
@@ -119,7 +119,9 @@ public class LeaderboardTest {
 		URI uri = new URI(baseUrl + port + "/api/leaderboards");
 
 		JSONObject jsonContent = new JSONObject();
-		jsonContent.put("month", "1");
+		jsonContent.put("utilityType", "0");
+		jsonContent.put("timeWindow", "0");
+		jsonContent.put("storedDateTime", "2022-10-11T09:00:00");
 
 		RequestBuilder request = MockMvcRequestBuilders
 				.post(uri)
@@ -137,8 +139,9 @@ public class LeaderboardTest {
 		URI uri = new URI(baseUrl + port + "/api/leaderboards");
 
 		JSONObject jsonContent = new JSONObject();
-		jsonContent.put("month", 1);
-
+		jsonContent.put("utilityType", "0");
+		jsonContent.put("timeWindow", "0");
+		jsonContent.put("storedDateTime", "2022-10-11T09:00:00");
 		RequestBuilder request = MockMvcRequestBuilders
 								.post(uri)
 								.with(SecurityMockMvcRequestPostProcessors.csrf())
@@ -151,12 +154,13 @@ public class LeaderboardTest {
 
 	@Test
 	public void updateLeaderboardWithToken() throws Exception {
-		Leaderboard leaderboardtest = new Leaderboard(1);
+		Leaderboard leaderboardtest = new Leaderboard();
+		// leaderboardtest.setUtilityType(0);
 		leaderboard.save(leaderboardtest);
-		leaderboardtest.setMonth(12);
+		leaderboardtest.setUtilityType(1);
 
 		JSONObject jsonContent = new JSONObject();
-		jsonContent.put("month", "12");
+		jsonContent.put("utilityType", "1");
 
 		URI uri = new URI(baseUrl + port + "/api/leaderboards/" + leaderboardtest.getId());
 
@@ -167,7 +171,7 @@ public class LeaderboardTest {
 				.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
-		assertEquals(200, response.getStatus());
+		assertEquals(200, response.getStatus()); // getting 400 instead of 200 later nede fix
 
 		RequestBuilder getRequest = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
 		MockHttpServletResponse updatedResponse = mockMvc.perform(getRequest).andReturn().getResponse();
@@ -176,16 +180,18 @@ public class LeaderboardTest {
 
 		assertNotNull(leaderboard);
 		assertEquals(leaderboardtest.getId(), leaderboard.getId());
-		assertEquals(leaderboardtest.getMonth(), leaderboard.getMonth());
+		assertEquals(leaderboardtest.getUtilityType(), leaderboard.getUtilityType());
 	}
 
 	@Test
 	public void updateLeaderboardWithoutToken() throws Exception {
-		Leaderboard leaderboardtest = new Leaderboard(1);
+		Leaderboard leaderboardtest = new Leaderboard();
+		leaderboardtest.setUtilityType(0);
 		leaderboard.save(leaderboardtest);
+		leaderboardtest.setUtilityType(1);
 
 		JSONObject jsonContent = new JSONObject();
-		jsonContent.put("month", "12");
+		jsonContent.put("utilityType", "1");
 
 		URI uri = new URI(baseUrl + port + "/api/leaderboards" + leaderboardtest.getId());
 
@@ -201,7 +207,7 @@ public class LeaderboardTest {
 
 	@Test
 	public void deleteLeaderboardWithToken() throws Exception {
-		Leaderboard leaderboardtest = new Leaderboard(1);
+		Leaderboard leaderboardtest = new Leaderboard();
 		leaderboard.save(leaderboardtest);
 
 		URI uri = new URI(baseUrl + port + "/api/leaderboards/" + leaderboardtest.getId());
@@ -216,7 +222,7 @@ public class LeaderboardTest {
 
 	@Test
 	public void deleteLeaderboardWithoutToken() throws Exception {
-		Leaderboard leaderboardtest = new Leaderboard(1);
+		Leaderboard leaderboardtest = new Leaderboard();
 		leaderboard.save(leaderboardtest);
 
 		URI uri = new URI(baseUrl + port + "/api/leaderboards/" + leaderboardtest.getId());

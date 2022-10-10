@@ -63,12 +63,5 @@ public class User {
     @LastModifiedDate
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
-
-    public User(String name, String address, String email, String housingType, int householdMembers) {
-        this.name = name;
-        this.address = address;
-        this.email = email;
-        this.housingType = housingType;
-        this.householdMembers = householdMembers;
-    }
+    
 }

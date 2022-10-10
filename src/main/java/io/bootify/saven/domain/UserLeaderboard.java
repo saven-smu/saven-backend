@@ -50,11 +50,5 @@ public class UserLeaderboard {
     @LastModifiedDate
     @Column(nullable = false)
     private OffsetDateTime lastUpdated;
-
-    public UserLeaderboard(Double computedScore, Leaderboard leaderboard, User user) {
-        this.computedScore = computedScore;
-        this.leaderboard = leaderboard;
-        this.user = user;
-    }
-
+    
 }

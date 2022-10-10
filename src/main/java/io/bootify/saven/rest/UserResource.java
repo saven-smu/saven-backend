@@ -39,6 +39,11 @@ public class UserResource {
         return ResponseEntity.ok(userService.get(id));
     }
 
+    @GetMapping("verifyUser/{email}")
+    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable final String email) {
+        return ResponseEntity.ok(userService.getUserByEmail(email));
+    }
+
     @PostMapping
     @ApiResponse(responseCode = "201")
     public ResponseEntity<UUID> createUser(@RequestBody @Valid final UserDTO userDTO) {

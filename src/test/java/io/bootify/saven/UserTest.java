@@ -48,12 +48,12 @@ public class UserTest {
 	@MockBean
 	private JwtDecoder jwtDecoder;
 
-	@AfterEach
+	/* @AfterEach
 	void tearDown() {
 		if (users.count() > 0){
-			users.deleteAll();
+			//users.deleteAll();
 		}
-	}
+	} */
 
 	@Test
 	public void addUserWithoutToken() throws Exception {
@@ -126,11 +126,13 @@ public class UserTest {
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 		String responseAsString = response.getContentAsString();
-		UserDTO users[] = objectMapper.readValue(responseAsString, UserDTO[].class);
-		
+		UserDTO usersResponse[] = objectMapper.readValue(responseAsString, UserDTO[].class);
 		assertEquals(200, response.getStatus());
-		assertNotNull(users);
-		assertEquals(userTest.getId(), users[users.length - 1].getId());
+		assertNotNull(usersResponse);
+		assertEquals(userTest.getId(), usersResponse[usersResponse.length - 1].getId());
+
+		users.deleteById(userTest.getId());
+		
 	}
 
 	@Test
@@ -155,7 +157,7 @@ public class UserTest {
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(401, response.getStatus());
-		
+		users.deleteById(userTest.getId());
 	}
 
 	@Test
@@ -187,6 +189,8 @@ public class UserTest {
 		assertEquals(200, response.getStatus());
 		assertEquals("John Doe 2", user.getName());
 		assertEquals("test2@gmail.com", user.getEmail());
+
+		users.deleteById(userTest.getId());
 	}
 
 	@Test
@@ -204,6 +208,7 @@ public class UserTest {
 
 		assertEquals(401, response.getStatus());
 		
+		users.deleteById(userTest.getId());
 	}
 
 	@Test

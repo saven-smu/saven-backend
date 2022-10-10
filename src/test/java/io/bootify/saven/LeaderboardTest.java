@@ -3,9 +3,9 @@ package io.bootify.saven;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 import com.nimbusds.jose.shaded.json.JSONObject;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,11 +48,8 @@ public class LeaderboardTest {
 	@MockBean
 	private JwtDecoder jwtDecoder;
 
-	@AfterEach
-	void tearDown() {
-		if (leaderboard.count() > 0)
-			leaderboard.deleteAll();
-	}
+	// updateLeaderboardWithToken got error
+	// All test cases pass individually but when do all tgt sometimes got error
 
 	@Test
 	public void getLeaderboardWithToken() throws Exception {
@@ -64,11 +61,13 @@ public class LeaderboardTest {
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 		String responseAsString = response.getContentAsString();
-		LeaderboardDTO leaderboard[] = objectMapper.readValue(responseAsString, LeaderboardDTO[].class);
+		LeaderboardDTO leaderboardarr[] = objectMapper.readValue(responseAsString, LeaderboardDTO[].class);
 
 		assertEquals(200, response.getStatus());
-		assertNotNull(leaderboard);
-		assertEquals(leaderboardtest.getId(), leaderboard[leaderboard.length - 1].getId());
+		assertNotNull(leaderboardarr);
+		assertEquals(leaderboardtest.getId(), leaderboardarr[leaderboardarr.length - 1].getId());
+
+		leaderboard.deleteById(leaderboardtest.getId());
 	}
 
 	@Test
@@ -81,11 +80,13 @@ public class LeaderboardTest {
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.csrf());
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 		String responseAsString = response.getContentAsString();
-		LeaderboardDTO leaderboard[] = objectMapper.readValue(responseAsString, LeaderboardDTO[].class);
+		LeaderboardDTO leaderboardresponse[] = objectMapper.readValue(responseAsString, LeaderboardDTO[].class);
 
 		assertEquals(200, response.getStatus());
-		assertNotNull(leaderboard);
-		assertEquals(leaderboardtest.getId(), leaderboard[leaderboard.length - 1].getId());
+		assertNotNull(leaderboardresponse);
+		assertEquals(leaderboardtest.getId(), leaderboardresponse[leaderboardresponse.length - 1].getId());
+
+		leaderboard.deleteById(leaderboardtest.getId());
 	}
 
 	@Test
@@ -131,11 +132,14 @@ public class LeaderboardTest {
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(201, response.getStatus());
+
+		UUID leaderboardid = objectMapper.readValue(response.getContentAsString(), UUID.class);
+		leaderboard.deleteById(leaderboardid);
 	}
 
 	@Test
 	public void addLeaderboardWithoutToken() throws Exception {
-		
+
 		URI uri = new URI(baseUrl + port + "/api/leaderboards");
 
 		JSONObject jsonContent = new JSONObject();
@@ -143,10 +147,10 @@ public class LeaderboardTest {
 		jsonContent.put("timeWindow", "0");
 		jsonContent.put("storedDateTime", "2022-10-11T09:00:00");
 		RequestBuilder request = MockMvcRequestBuilders
-								.post(uri)
-								.with(SecurityMockMvcRequestPostProcessors.csrf())
-								.content(jsonContent.toJSONString())
-								.contentType(MediaType.APPLICATION_JSON);
+				.post(uri)
+				.with(SecurityMockMvcRequestPostProcessors.csrf())
+				.content(jsonContent.toJSONString())
+				.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(401, response.getStatus());
@@ -155,7 +159,6 @@ public class LeaderboardTest {
 	@Test
 	public void updateLeaderboardWithToken() throws Exception {
 		Leaderboard leaderboardtest = new Leaderboard();
-		// leaderboardtest.setUtilityType(0);
 		leaderboard.save(leaderboardtest);
 		leaderboardtest.setUtilityType(1);
 
@@ -167,8 +170,7 @@ public class LeaderboardTest {
 		RequestBuilder request = MockMvcRequestBuilders
 				.put(uri)
 				.with(SecurityMockMvcRequestPostProcessors.jwt())
-				.content(jsonContent.toString())
-				.contentType(MediaType.APPLICATION_JSON);
+				.content(jsonContent.toString());
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(200, response.getStatus()); // getting 400 instead of 200 later nede fix
@@ -176,11 +178,13 @@ public class LeaderboardTest {
 		RequestBuilder getRequest = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
 		MockHttpServletResponse updatedResponse = mockMvc.perform(getRequest).andReturn().getResponse();
 		String responseAsString = updatedResponse.getContentAsString();
-		LeaderboardDTO leaderboard = objectMapper.readValue(responseAsString, LeaderboardDTO.class);
+		LeaderboardDTO leaderboardresponse = objectMapper.readValue(responseAsString, LeaderboardDTO.class);
 
-		assertNotNull(leaderboard);
-		assertEquals(leaderboardtest.getId(), leaderboard.getId());
-		assertEquals(leaderboardtest.getUtilityType(), leaderboard.getUtilityType());
+		assertNotNull(leaderboardresponse);
+		assertEquals(leaderboardtest.getId(), leaderboardresponse.getId());
+		assertEquals(leaderboardtest.getUtilityType(), leaderboardresponse.getUtilityType());
+
+		leaderboard.delete(leaderboardtest);
 	}
 
 	@Test
@@ -233,5 +237,7 @@ public class LeaderboardTest {
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(401, response.getStatus());
+
+		leaderboard.deleteById(leaderboardtest.getId());
 	}
 }

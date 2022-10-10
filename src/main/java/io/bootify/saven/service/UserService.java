@@ -34,6 +34,12 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    public UserDTO getUserByEmail(final String email) {
+        return userRepository.findDistinctByEmail(email)
+                .map(user -> mapToDTO(user, new UserDTO()))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
     public UUID create(final UserDTO userDTO) {
         final User user = new User();
         mapToEntity(userDTO, user);

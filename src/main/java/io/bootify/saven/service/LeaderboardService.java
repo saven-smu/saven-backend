@@ -62,9 +62,9 @@ public class LeaderboardService {
 
     private Leaderboard mapToEntity(final LeaderboardDTO leaderboardDTO,
             final Leaderboard leaderboard) {
-        leaderboard.setUtilityType(leaderboard.getUtilityType());
-        leaderboard.setTimeWindow(leaderboard.getTimeWindow());
-        leaderboard.setStoredDateTime(leaderboard.getStoredDateTime());
+        leaderboard.setUtilityType(leaderboardDTO.getUtilityType());
+        leaderboard.setTimeWindow(leaderboardDTO.getTimeWindow());
+        leaderboard.setStoredDateTime(leaderboardDTO.getStoredDateTime());
         return leaderboard;
     }
 

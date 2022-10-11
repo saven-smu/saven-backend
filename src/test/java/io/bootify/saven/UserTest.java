@@ -63,7 +63,7 @@ public class UserTest {
 		jsonContent.put("name", "John Doe");
 		jsonContent.put("address", "Singapore");
 		jsonContent.put("email", "test@gmail.com");
-		jsonContent.put("housingType", "HDB-5room");
+		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
 
 		RequestBuilder request = MockMvcRequestBuilders
@@ -86,7 +86,7 @@ public class UserTest {
 		jsonContent.put("name", "John Doe");
 		jsonContent.put("address", "Singapore");
 		jsonContent.put("email", "test@gmail.com");
-		jsonContent.put("housingType", "HDB-5room");
+		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
 
 		RequestBuilder request = MockMvcRequestBuilders
@@ -105,7 +105,7 @@ public class UserTest {
 		
 		URI uri = new URI(baseUrl + port + "/api/users");
 	
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.csrf());;
@@ -120,7 +120,7 @@ public class UserTest {
 		
 		URI uri = new URI(baseUrl + port + "/api/users");
 	
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
@@ -141,10 +141,10 @@ public class UserTest {
 		jsonContent.put("name", "John Doe 2");
 		jsonContent.put("address", "Singapore");
 		jsonContent.put("email", "test2@gmail.com");
-		jsonContent.put("housingType", "HDB-5room");
+		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
 	
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
@@ -166,10 +166,10 @@ public class UserTest {
 		jsonContent.put("name", "John Doe 2");
 		jsonContent.put("address", "Singapore");
 		jsonContent.put("email", "test2@gmail.com");
-		jsonContent.put("housingType", "HDB-5room");
+		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
 	
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
@@ -196,7 +196,7 @@ public class UserTest {
 	@Test
 	public void deleteUserWithoutToken() throws Exception {
 
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
@@ -214,7 +214,7 @@ public class UserTest {
 	@Test
 	public void deleteUserWithToken() throws Exception {
 		
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());

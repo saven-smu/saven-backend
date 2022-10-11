@@ -54,8 +54,6 @@ public class UserLeaderboardTest {
 	@MockBean
 	private JwtDecoder jwtDecoder;
 
-	// updateUserLeaderboardWithToken got error with PUT, need help
-
 	@Test
 	public void getUserLeaderboardWithToken() throws Exception {
 		URI uri = new URI(baseUrl + port + "/api/userLeaderboards");
@@ -210,6 +208,7 @@ public class UserLeaderboardTest {
 		userleaderboard.save(userleaderboardtest);
 
 		User usertest2 = new User("John Doe 2", "Singapore", "test@gmail.com", "HDB5", 4);
+		users.save(usertest2);
 
 		JSONObject jsonContent = new JSONObject();
 		jsonContent.put("position", "1");

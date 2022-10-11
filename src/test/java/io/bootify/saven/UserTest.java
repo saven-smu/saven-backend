@@ -3,8 +3,8 @@ package io.bootify.saven;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
+import java.util.UUID;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,13 +48,6 @@ public class UserTest {
 	@MockBean
 	private JwtDecoder jwtDecoder;
 
-	/* @AfterEach
-	void tearDown() {
-		if (users.count() > 0){
-			//users.deleteAll();
-		}
-	} */
-
 	@Test
 	public void addUserWithoutToken() throws Exception {
 		URI uri = new URI(baseUrl + port + "/api/users");
@@ -63,7 +56,7 @@ public class UserTest {
 		jsonContent.put("name", "John Doe");
 		jsonContent.put("address", "Singapore");
 		jsonContent.put("email", "test@gmail.com");
-		jsonContent.put("housingType", "HDB-5room");
+		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
 
 		RequestBuilder request = MockMvcRequestBuilders
@@ -86,7 +79,7 @@ public class UserTest {
 		jsonContent.put("name", "John Doe");
 		jsonContent.put("address", "Singapore");
 		jsonContent.put("email", "test@gmail.com");
-		jsonContent.put("housingType", "HDB-5room");
+		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
 
 		RequestBuilder request = MockMvcRequestBuilders
@@ -98,6 +91,9 @@ public class UserTest {
 
 		assertEquals(201, response.getStatus());
 
+		UUID userId = objectMapper.readValue(response.getContentAsString(), UUID.class);
+		users.deleteById(userId);
+		
 	}
 
 	@Test
@@ -105,7 +101,7 @@ public class UserTest {
 		
 		URI uri = new URI(baseUrl + port + "/api/users");
 	
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.csrf());;
@@ -113,26 +109,23 @@ public class UserTest {
 		
 		assertEquals(401, response.getStatus());
 
+		users.deleteById(userTest.getId());
+
 	}
 
 	@Test
 	public void getUserWithToken() throws Exception {
-		
-		URI uri = new URI(baseUrl + port + "/api/users");
-	
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+			
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
+		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-		String responseAsString = response.getContentAsString();
-		UserDTO usersResponse[] = objectMapper.readValue(responseAsString, UserDTO[].class);
-		assertEquals(200, response.getStatus());
-		assertNotNull(usersResponse);
-		assertEquals(userTest.getId(), usersResponse[usersResponse.length - 1].getId());
 
-		users.deleteById(userTest.getId());
-		
+		assertEquals(200, response.getStatus());
+
+		users.deleteById(userTest.getId());	
 	}
 
 	@Test
@@ -141,10 +134,10 @@ public class UserTest {
 		jsonContent.put("name", "John Doe 2");
 		jsonContent.put("address", "Singapore");
 		jsonContent.put("email", "test2@gmail.com");
-		jsonContent.put("housingType", "HDB-5room");
+		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
 	
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
@@ -166,10 +159,10 @@ public class UserTest {
 		jsonContent.put("name", "John Doe 2");
 		jsonContent.put("address", "Singapore");
 		jsonContent.put("email", "test2@gmail.com");
-		jsonContent.put("housingType", "HDB-5room");
+		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
 	
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
@@ -196,7 +189,7 @@ public class UserTest {
 	@Test
 	public void deleteUserWithoutToken() throws Exception {
 
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
@@ -214,7 +207,7 @@ public class UserTest {
 	@Test
 	public void deleteUserWithToken() throws Exception {
 		
-		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB-5room", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
@@ -225,6 +218,8 @@ public class UserTest {
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(204, response.getStatus());
+
+		//users.deleteById(userTest.getId());
 		
 	}
 

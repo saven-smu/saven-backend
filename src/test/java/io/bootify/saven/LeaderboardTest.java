@@ -6,8 +6,6 @@ import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import javax.print.attribute.standard.Media;
-
 import com.nimbusds.jose.shaded.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -55,7 +53,6 @@ public class LeaderboardTest {
 	public void getLeaderboardWithToken() throws Exception {
 		Leaderboard leaderboardtest = new Leaderboard();
 		leaderboard.save(leaderboardtest);
-		
 		URI uri = new URI(baseUrl + port + "/api/leaderboards/" + leaderboardtest.getId());
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();

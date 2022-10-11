@@ -1,4 +1,4 @@
-/* package io.bootify.saven;
+package io.bootify.saven;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,15 +51,11 @@ public class LeaderboardTest {
 	@MockBean
 	private JwtDecoder jwtDecoder;
 
-	// updateLeaderboardWithToken got error
-
 	@Test
 	public void getLeaderboardWithToken() throws Exception {
 		Leaderboard leaderboardtest = new Leaderboard();
 		leaderboard.save(leaderboardtest);
-
-		// String responseAsString = response.getContentAsString();
-		// LeaderboardDTO leaderboardarr[] = objectMapper.readValue(responseAsString, LeaderboardDTO[].class);
+		
 		URI uri = new URI(baseUrl + port + "/api/leaderboards/" + leaderboardtest.getId());
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -247,4 +243,3 @@ public class LeaderboardTest {
 		leaderboard.deleteById(leaderboardtest.getId());
 	}
 }
- */

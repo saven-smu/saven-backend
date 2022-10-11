@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.net.URI;
 import java.util.UUID;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -116,22 +115,17 @@ public class UserTest {
 
 	@Test
 	public void getUserWithToken() throws Exception {
-		
-		URI uri = new URI(baseUrl + port + "/api/users");
-	
+			
 		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
+		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
 		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
-		String responseAsString = response.getContentAsString();
-		UserDTO usersResponse[] = objectMapper.readValue(responseAsString, UserDTO[].class);
-		assertEquals(200, response.getStatus());
-		assertNotNull(usersResponse);
-		//assertEquals(userTest.getId(), usersResponse[usersResponse.length - 1].getId());
 
-		users.deleteById(userTest.getId());
-		
+		assertEquals(200, response.getStatus());
+
+		users.deleteById(userTest.getId());	
 	}
 
 	@Test
@@ -213,7 +207,7 @@ public class UserTest {
 	@Test
 	public void deleteUserWithToken() throws Exception {
 		
-		User userTest = new User("John Doe delete", "Singapore", "test@gmail.com", "HDB5", 4);
+		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());

@@ -3,7 +3,10 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.UUID;
+
+import javax.print.attribute.standard.Media;
 
 import com.nimbusds.jose.shaded.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -150,23 +153,28 @@ public class LeaderboardTest {
 		assertEquals(401, response.getStatus());
 	}
 
-	// @Test
+	@Test
 	public void updateLeaderboardWithToken() throws Exception {
 		Leaderboard leaderboardtest = new Leaderboard();
+		leaderboardtest.setUtilityType(0);
+		leaderboardtest.setTimeWindow(0);
+		leaderboardtest.setStoredDateTime(LocalDateTime.now());
 		leaderboard.save(leaderboardtest);
+
 		leaderboardtest.setUtilityType(1);
 
 		JSONObject jsonContent = new JSONObject();
-		jsonContent.put("utilityType", "0");
+		jsonContent.put("utilityType", "1");
 		jsonContent.put("timeWindow", "0");
-		jsonContent.put("storedDateTime", "2022-10-11T09:00:00");
+		jsonContent.put("storedDateTime", LocalDateTime.now().toString());
 
 		URI uri = new URI(baseUrl + port + "/api/leaderboards/" + leaderboardtest.getId());
 
 		RequestBuilder request = MockMvcRequestBuilders
 				.put(uri)
 				.with(SecurityMockMvcRequestPostProcessors.jwt())
-				.content(jsonContent.toString());
+				.content(jsonContent.toString())
+				.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(200, response.getStatus()); // getting 400 instead of 200 later nede fix

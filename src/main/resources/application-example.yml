@@ -1,5 +1,10 @@
 auth0:
   audience: <<YOUR AUDIENCE>>
+  audience_mgt: <<YOUR AUDIENCE FOR MANAGEMENT API>>
+  client_id: <<YOUR CLIENT ID>>
+  client_secret: <<YOUR CLIENT SECRET>>
+  management_domain: <<YOUR MANAGEMENT API DOMAIN>>
+  role_id: <<YOUR ROLE ID>>
 spring:
   security:
     oauth2:

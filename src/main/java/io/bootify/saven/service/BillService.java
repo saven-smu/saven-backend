@@ -5,6 +5,8 @@ import io.bootify.saven.domain.User;
 import io.bootify.saven.model.BillDTO;
 import io.bootify.saven.repos.BillRepository;
 import io.bootify.saven.repos.UserRepository;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -53,6 +55,13 @@ public class BillService {
 
     public void delete(final UUID id) {
         billRepository.deleteById(id);
+    }
+
+    public List<BillDTO> getPastBills(final int numDays) {
+        return billRepository.findByStoredDateTimeAfter(LocalDateTime.now().minusDays(numDays))
+                .stream()
+                .map(bill -> mapToDTO(bill, new BillDTO()))
+                .collect(Collectors.toList());
     }
 
     private BillDTO mapToDTO(final Bill bill, final BillDTO billDTO) {

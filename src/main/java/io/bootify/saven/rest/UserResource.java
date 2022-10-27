@@ -49,14 +49,14 @@ public class UserResource {
     }
     
     @GetMapping
-    @PreAuthorize("hasAuthority('read:user')")    
+    @PreAuthorize("hasAuthority('read:users')")    
     public ResponseEntity<List<UserDTO>> getAllUsers() {
         return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('read:user')")    
     public ResponseEntity<UserDTO> getUser(@PathVariable final UUID id) {
-        System.out.println("HEllo"+SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString());
         return ResponseEntity.ok(userService.get(id));
     }
 
@@ -84,6 +84,7 @@ public class UserResource {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete:user')")
     @ApiResponse(responseCode = "204")
     public ResponseEntity<Void> deleteUser(@PathVariable final UUID id) {
         userService.delete(id);

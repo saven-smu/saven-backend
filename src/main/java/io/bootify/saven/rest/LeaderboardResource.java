@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,16 +31,19 @@ public class LeaderboardResource {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('read:leaderboards')")
     public ResponseEntity<List<LeaderboardDTO>> getAllLeaderboards() {
         return ResponseEntity.ok(leaderboardService.findAll());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('read:leaderboard')")
     public ResponseEntity<LeaderboardDTO> getLeaderboard(@PathVariable final UUID id) {
         return ResponseEntity.ok(leaderboardService.get(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('upload:leaderboard')")
     @ApiResponse(responseCode = "201")
     public ResponseEntity<UUID> createLeaderboard(
             @RequestBody @Valid final LeaderboardDTO leaderboardDTO) {
@@ -47,6 +51,7 @@ public class LeaderboardResource {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('update:leaderboard')")
     public ResponseEntity<Void> updateLeaderboard(@PathVariable final UUID id,
             @RequestBody @Valid final LeaderboardDTO leaderboardDTO) {
         leaderboardService.update(id, leaderboardDTO);
@@ -54,6 +59,7 @@ public class LeaderboardResource {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete:leaderboard')")
     @ApiResponse(responseCode = "204")
     public ResponseEntity<Void> deleteLeaderboard(@PathVariable final UUID id) {
         leaderboardService.delete(id);

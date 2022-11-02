@@ -39,9 +39,9 @@ public class BillResource {
         return ResponseEntity.ok(billService.get(id));
     }
 
-    @GetMapping("getPastBills/{numDays}")
-    public ResponseEntity<List<BillDTO>> getPastBills(@PathVariable final int numDays) {
-        return ResponseEntity.ok(billService.getPastBills(numDays));
+    @GetMapping("getPastBills/{user_id}/{numDays}")
+    public ResponseEntity<List<BillDTO>> getUserBills(@PathVariable final UUID user_id, @PathVariable final int numDays) {
+        return ResponseEntity.ok(billService.getUserBills(user_id, numDays));
     }
 
     @PostMapping

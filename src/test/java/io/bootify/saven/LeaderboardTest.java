@@ -170,7 +170,7 @@ public class LeaderboardTest {
 				.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
-		assertEquals(200, response.getStatus()); // getting 400 instead of 200 later nede fix
+		assertEquals(200, response.getStatus());
 
 		RequestBuilder getRequest = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
 		MockHttpServletResponse updatedResponse = mockMvc.perform(getRequest).andReturn().getResponse();

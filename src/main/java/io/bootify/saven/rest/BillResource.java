@@ -39,6 +39,11 @@ public class BillResource {
         return ResponseEntity.ok(billService.get(id));
     }
 
+    @GetMapping("getPastBills/{user_id}/{numDays}")
+    public ResponseEntity<List<BillDTO>> getUserBills(@PathVariable final UUID user_id, @PathVariable final int numDays) {
+        return ResponseEntity.ok(billService.getUserBills(user_id, numDays));
+    }
+
     @PostMapping
     @ApiResponse(responseCode = "201")
     public ResponseEntity<UUID> createBill(@RequestBody @Valid final BillDTO billDTO) {

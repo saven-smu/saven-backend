@@ -31,7 +31,6 @@ public class LeaderboardResource {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('read:leaderboards')")
     public ResponseEntity<List<LeaderboardDTO>> getAllLeaderboards() {
         return ResponseEntity.ok(leaderboardService.findAll());
     }

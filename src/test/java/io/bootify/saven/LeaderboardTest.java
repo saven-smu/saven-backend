@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
@@ -54,7 +55,7 @@ public class LeaderboardTest {
 		Leaderboard leaderboardtest = new Leaderboard();
 		leaderboard.save(leaderboardtest);
 		URI uri = new URI(baseUrl + port + "/api/leaderboards/" + leaderboardtest.getId());
-		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
+		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("read:leaderboard")));
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(200, response.getStatus());
@@ -84,7 +85,7 @@ public class LeaderboardTest {
 
 		RequestBuilder request = MockMvcRequestBuilders
 				.get(uri)
-				.with(SecurityMockMvcRequestPostProcessors.jwt())
+				.with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("read:leaderboard")))
 				.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
@@ -115,7 +116,7 @@ public class LeaderboardTest {
 
 		RequestBuilder request = MockMvcRequestBuilders
 				.post(uri)
-				.with(SecurityMockMvcRequestPostProcessors.jwt())
+				.with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("upload:leaderboard")))
 				.content(jsonContent.toString())
 				.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -165,14 +166,14 @@ public class LeaderboardTest {
 
 		RequestBuilder request = MockMvcRequestBuilders
 				.put(uri)
-				.with(SecurityMockMvcRequestPostProcessors.jwt())
+				.with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("update:leaderboard")))
 				.content(jsonContent.toString())
 				.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(200, response.getStatus());
 
-		RequestBuilder getRequest = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
+		RequestBuilder getRequest = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("read:leaderboard")));
 		MockHttpServletResponse updatedResponse = mockMvc.perform(getRequest).andReturn().getResponse();
 		String responseAsString = updatedResponse.getContentAsString();
 		LeaderboardDTO leaderboardresponse = objectMapper.readValue(responseAsString, LeaderboardDTO.class);
@@ -217,7 +218,7 @@ public class LeaderboardTest {
 
 		RequestBuilder request = MockMvcRequestBuilders
 				.delete(uri)
-				.with(SecurityMockMvcRequestPostProcessors.jwt());
+				.with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("delete:leaderboard")));
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(204, response.getStatus());

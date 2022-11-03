@@ -37,7 +37,6 @@ public class UserLeaderboardResource {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('read:userLeaderboard')")
     public ResponseEntity<UserLeaderboardDTO> getUserLeaderboard(@PathVariable final UUID id) {
         return ResponseEntity.ok(userLeaderboardService.get(id));
     }

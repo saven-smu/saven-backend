@@ -10,11 +10,11 @@ spring:
     oauth2:
         resourceserver:
             jwt:
-                issuer-uri: <<YOUR DOMAIN>>
+                issuer-uri: ${AUTH0_ISSUER_URI}
   datasource:
     url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/saven}
     username: ${JDBC_DATABASE_USERNAME:postgres}
-    password: ${JDBC_DATABASE_PASSWORD:<<YOUR_PASSWORD>>}
+    password: ${JDBC_DATABASE_PASSWORD:password}
     dbcp2:
       max-wait-millis: 30000
       validation-query: SELECT 1

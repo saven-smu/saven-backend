@@ -50,6 +50,9 @@ public class User {
     @Column(nullable = false)
     private Integer householdMembers;
 
+    @Column(nullable = false)
+    private Integer credits;
+
     @OneToMany(mappedBy = "user")
     private Set<Bill> userBills;
 

@@ -64,6 +64,7 @@ public class UserService {
         userDTO.setAddress(user.getAddress());
         userDTO.setHousingType(user.getHousingType());
         userDTO.setHouseholdMembers(user.getHouseholdMembers());
+        userDTO.setCredits(user.getCredits());
         return userDTO;
     }
 
@@ -73,6 +74,7 @@ public class UserService {
         user.setAddress(userDTO.getAddress());
         user.setHousingType(userDTO.getHousingType());
         user.setHouseholdMembers(userDTO.getHouseholdMembers());
+        userDTO.setCredits(userDTO.getCredits());
         return user;
     }
 

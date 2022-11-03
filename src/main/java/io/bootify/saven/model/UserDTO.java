@@ -34,4 +34,7 @@ public class UserDTO {
     @NotNull
     private Integer householdMembers;
 
+    @NotNull
+    private Integer credits;
+
 }

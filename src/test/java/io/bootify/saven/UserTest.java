@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
@@ -81,10 +82,11 @@ public class UserTest {
 		jsonContent.put("email", "test@gmail.com");
 		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
+		jsonContent.put("credits", 4);
 
 		RequestBuilder request = MockMvcRequestBuilders
 								.post(uri)
-								.with(SecurityMockMvcRequestPostProcessors.jwt())
+								.with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("upload:user")))
 								.content(jsonContent.toString())
 								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
@@ -120,7 +122,7 @@ public class UserTest {
 		users.save(userTest);
 		
 		URI uri = new URI(baseUrl + port + "/api/users/" + userTest.getId());
-		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
+		RequestBuilder request = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("read:user")));
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(200, response.getStatus());
@@ -161,6 +163,7 @@ public class UserTest {
 		jsonContent.put("email", "test2@gmail.com");
 		jsonContent.put("housingType", "HDB5");
 		jsonContent.put("householdMembers", 4);
+		jsonContent.put("credits", 4);
 	
 		User userTest = new User("John Doe", "Singapore", "test@gmail.com", "HDB5", 4);
 		users.save(userTest);
@@ -169,12 +172,12 @@ public class UserTest {
 
 		RequestBuilder putRequest = MockMvcRequestBuilders
 								.put(uri)
-								.with(SecurityMockMvcRequestPostProcessors.jwt())
+								.with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("update:user")))
 								.content(jsonContent.toString())
 								.contentType(MediaType.APPLICATION_JSON);
 		MockHttpServletResponse response = mockMvc.perform(putRequest).andReturn().getResponse();
 
-		RequestBuilder getRequest = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt());
+		RequestBuilder getRequest = MockMvcRequestBuilders.get(uri).with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("read:user")));
 		MockHttpServletResponse updatedResponse = mockMvc.perform(getRequest).andReturn().getResponse();
 		String responseAsString = updatedResponse.getContentAsString();
 		UserDTO user = objectMapper.readValue(responseAsString, UserDTO.class);
@@ -214,7 +217,7 @@ public class UserTest {
 
 		RequestBuilder request = MockMvcRequestBuilders
 								.delete(uri)
-								.with(SecurityMockMvcRequestPostProcessors.jwt());
+								.with(SecurityMockMvcRequestPostProcessors.jwt().authorities(new SimpleGrantedAuthority("delete:user")));
 		MockHttpServletResponse response = mockMvc.perform(request).andReturn().getResponse();
 
 		assertEquals(204, response.getStatus());

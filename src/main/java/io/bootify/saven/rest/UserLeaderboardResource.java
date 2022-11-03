@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,16 +31,19 @@ public class UserLeaderboardResource {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('read:userLeaderboards')")
     public ResponseEntity<List<UserLeaderboardDTO>> getAllUserLeaderboards() {
         return ResponseEntity.ok(userLeaderboardService.findAll());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('read:userLeaderboard')")
     public ResponseEntity<UserLeaderboardDTO> getUserLeaderboard(@PathVariable final UUID id) {
         return ResponseEntity.ok(userLeaderboardService.get(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('upload:userLeaderboard')")
     @ApiResponse(responseCode = "201")
     public ResponseEntity<UUID> createUserLeaderboard(
             @RequestBody @Valid final UserLeaderboardDTO userLeaderboardDTO) {
@@ -47,6 +51,7 @@ public class UserLeaderboardResource {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('update:userLeaderboard')")
     public ResponseEntity<Void> updateUserLeaderboard(@PathVariable final UUID id,
             @RequestBody @Valid final UserLeaderboardDTO userLeaderboardDTO) {
         userLeaderboardService.update(id, userLeaderboardDTO);
@@ -54,6 +59,7 @@ public class UserLeaderboardResource {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete:userLeaderboard')")
     @ApiResponse(responseCode = "204")
     public ResponseEntity<Void> deleteUserLeaderboard(@PathVariable final UUID id) {
         userLeaderboardService.delete(id);

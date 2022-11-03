@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,11 +31,13 @@ public class BillResource {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('read:bills')")
     public ResponseEntity<List<BillDTO>> getAllBills() {
         return ResponseEntity.ok(billService.findAll());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('read:bill')")
     public ResponseEntity<BillDTO> getBill(@PathVariable final UUID id) {
         return ResponseEntity.ok(billService.get(id));
     }
@@ -45,12 +48,14 @@ public class BillResource {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('upload:bill')")
     @ApiResponse(responseCode = "201")
     public ResponseEntity<UUID> createBill(@RequestBody @Valid final BillDTO billDTO) {
         return new ResponseEntity<>(billService.create(billDTO), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('update:bill')")
     public ResponseEntity<Void> updateBill(@PathVariable final UUID id,
             @RequestBody @Valid final BillDTO billDTO) {
         billService.update(id, billDTO);
@@ -58,6 +63,7 @@ public class BillResource {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('delete:bill')")
     @ApiResponse(responseCode = "204")
     public ResponseEntity<Void> deleteBill(@PathVariable final UUID id) {
         billService.delete(id);

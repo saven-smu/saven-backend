@@ -4,10 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 application-local.yml
-application.yml
 *.log
 node_modules/
 node/
+**.env
 
 ### STS ###
 .apt_generated

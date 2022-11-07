@@ -30,10 +30,6 @@
       "workingDirectory": null,
       "secrets": [
         {
-          "valueFrom": "arn:aws:ssm:ap-southeast-1:895986620256:parameter/saven-db-username",
-          "name": "JDBC_DATABASE_USERNAME"
-        },
-        {
           "valueFrom": "arn:aws:ssm:ap-southeast-1:895986620256:parameter/auth0-issuer-uri",
           "name": "AUTH0_ISSUER_URI"
         },
@@ -44,6 +40,30 @@
         {
           "valueFrom": "arn:aws:ssm:ap-southeast-1:895986620256:parameter/saven-db-url",
           "name": "JDBC_DATABASE_URL"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-southeast-1:895986620256:parameter/saven-db-username",
+          "name": "JDBC_DATABASE_USERNAME"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-southeast-1:895986620256:parameter/auth0-audience-mgt",
+          "name": "AUTH0_AUDIENCE_MGT"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-southeast-1:895986620256:parameter/auth0-client-id",
+          "name": "AUTH0_CLIENT_ID"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-southeast-1:895986620256:parameter/auth0-client-secret",
+          "name": "AUTH0_CLIENT_SECRET"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-southeast-1:895986620256:parameter/auth0-mgt-domain",
+          "name": "AUTH0_MGT_DOMAIN"
+        },
+        {
+          "valueFrom": "arn:aws:ssm:ap-southeast-1:895986620256:parameter/auth0-role-id",
+          "name": "AUTH0_ROLE_ID"
         }
       ],
       "dockerSecurityOptions": null,
@@ -51,7 +71,7 @@
       "memoryReservation": 768,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "docker.io/somethingsimple/saven:0.0.1-SNAPSHOT",
+      "image": "docker.io/somethingsimple/saven:684c4d11f37e699a14e4b2f56104d373af29a787",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -107,7 +127,7 @@
   "networkMode": null,
   "runtimePlatform": null,
   "cpu": "768",
-  "revision": 4,
+  "revision": 6,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,

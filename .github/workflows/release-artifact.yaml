@@ -66,6 +66,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: saven-api
+          service: saven-api-svc
           cluster: saven-cluster
           wait-for-service-stability: true

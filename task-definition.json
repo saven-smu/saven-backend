@@ -78,7 +78,6 @@
     "EXTERNAL",
     "EC2"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:ap-southeast-1:895986620256:task-definition/saven-api-task:4",
   "family": "saven-api-task",
   "requiresAttributes": [
     {

@@ -36,22 +36,8 @@ public class LeaderboardService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public List<LeaderboardDTO> getPastLeaderboard(final int utilityType, final int numDays) {
-        return leaderboardRepository.findByUtilityTypeAndStoredDateTimeAfter(utilityType, LocalDateTime.now().minusDays(numDays))
-                .stream()
-                .map(leaderboard -> mapToDTO(leaderboard, new LeaderboardDTO()))
-                .collect(Collectors.toList());
-    }
-
     public List<LeaderboardDTO> getLeaderboardsTimeWindowAndUtilityType(final int utilityType, final int time_window) {
         return leaderboardRepository.findByUtilityTypeAndTimeWindow(utilityType, time_window)
-                .stream()
-                .map(leaderboard -> mapToDTO(leaderboard, new LeaderboardDTO()))
-                .collect(Collectors.toList());
-    }
-
-    public List<LeaderboardDTO> getLeaderboardsTimeWindow(final int time_window) {
-        return leaderboardRepository.findByTimeWindow(time_window)
                 .stream()
                 .map(leaderboard -> mapToDTO(leaderboard, new LeaderboardDTO()))
                 .collect(Collectors.toList());

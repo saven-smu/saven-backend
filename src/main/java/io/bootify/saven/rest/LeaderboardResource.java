@@ -65,4 +65,19 @@ public class LeaderboardResource {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("getPastLeaderboards/{utility_type}/{numDays}")
+    public ResponseEntity<List<LeaderboardDTO>> getPastLeaderboard(@PathVariable final int utility_type, @PathVariable final int numDays) {
+        return ResponseEntity.ok(leaderboardService.getPastLeaderboard(utility_type, numDays));
+    }
+
+    @GetMapping("getLeaderboards/{time_window}/{utility_type}")
+    public ResponseEntity<List<LeaderboardDTO>> getPastLeaderboardTimeWindowAndUtilityType(@PathVariable final int time_window, @PathVariable final int utility_type) {
+        return ResponseEntity.ok(leaderboardService.getLeaderboardsTimeWindowAndUtilityType(utility_type, time_window));
+    }
+
+    @GetMapping("getLeaderboards/{time_window}")
+    public ResponseEntity<List<LeaderboardDTO>> getLeaderboardsTimeWindow(@PathVariable final int time_window) {
+        return ResponseEntity.ok(leaderboardService.getLeaderboardsTimeWindow(time_window));
+    }
+
 }

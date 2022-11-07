@@ -4,7 +4,6 @@ import io.bootify.saven.domain.Leaderboard;
 import io.bootify.saven.model.LeaderboardDTO;
 import io.bootify.saven.repos.LeaderboardRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;

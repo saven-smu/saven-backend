@@ -2,7 +2,6 @@ package io.bootify.saven.repos;
 
 import io.bootify.saven.domain.Leaderboard;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

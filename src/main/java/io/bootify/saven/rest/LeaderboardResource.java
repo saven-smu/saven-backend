@@ -65,4 +65,9 @@ public class LeaderboardResource {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("getLeaderboards/{time_window}/{utility_type}")
+    public ResponseEntity<List<LeaderboardDTO>> getPastLeaderboardTimeWindowAndUtilityType(@PathVariable final int time_window, @PathVariable final int utility_type) {
+        return ResponseEntity.ok(leaderboardService.getLeaderboardsTimeWindowAndUtilityType(utility_type, time_window));
+    }
+
 }

@@ -3,6 +3,7 @@ package io.bootify.saven.service;
 import io.bootify.saven.domain.Leaderboard;
 import io.bootify.saven.model.LeaderboardDTO;
 import io.bootify.saven.repos.LeaderboardRepository;
+
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -32,6 +33,13 @@ public class LeaderboardService {
         return leaderboardRepository.findById(id)
                 .map(leaderboard -> mapToDTO(leaderboard, new LeaderboardDTO()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
+    public List<LeaderboardDTO> getLeaderboardsTimeWindowAndUtilityType(final int utilityType, final int time_window) {
+        return leaderboardRepository.findByUtilityTypeAndTimeWindow(utilityType, time_window)
+                .stream()
+                .map(leaderboard -> mapToDTO(leaderboard, new LeaderboardDTO()))
+                .collect(Collectors.toList());
     }
 
     public UUID create(final LeaderboardDTO leaderboardDTO) {

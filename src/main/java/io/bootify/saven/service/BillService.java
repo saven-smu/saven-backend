@@ -7,6 +7,7 @@ import io.bootify.saven.repos.BillRepository;
 import io.bootify.saven.repos.UserRepository;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -58,7 +59,7 @@ public class BillService {
     }
 
     public List<BillDTO> getUserBills(final UUID user_id, final int numDays) {
-        return billRepository.findByUser_IdAndStoredDateTimeAfter(user_id, LocalDateTime.now().minusDays(numDays))
+        return billRepository.findByUser_IdAndStoredDateTimeAfter(user_id, LocalDateTime.now(ZoneOffset.UTC).minusDays(numDays))
                 .stream()
                 .map(bill -> mapToDTO(bill, new BillDTO()))
                 .collect(Collectors.toList());

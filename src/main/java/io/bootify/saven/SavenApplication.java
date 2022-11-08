@@ -20,7 +20,7 @@ public class SavenApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "https://saven.pages.dev")
+                .allowedOrigins("https://saven.pages.dev")
                 .allowedMethods("GET", "DELETE", "PUT", "POST");
             }
         };

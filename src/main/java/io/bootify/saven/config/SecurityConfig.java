@@ -23,7 +23,8 @@ public class SecurityConfig {
    //APIs that don't need authentication
    private static final String[] WHITE_LIST_URLS = {
         "/api/leaderboards",
-        "/api/userLeaderboards/{\\d+}"
+        "/api/userLeaderboards/{\\d+}",
+        "/api/leaderboards/getLeaderboards/{\\d+}/{\\d+}"
    };
    
    @Value("${auth0.audience}")

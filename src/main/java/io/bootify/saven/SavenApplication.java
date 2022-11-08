@@ -19,8 +19,9 @@ public class SavenApplication {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("http://localhost:5173");
-                registry.addMapping("/**").allowedOrigins("https://saven.pages.dev/create");
+                registry.addMapping("/**")
+                .allowedOrigins("http://localhost:5173", "https://saven.pages.dev/create")
+                .allowedMethods("GET", "DELETE", "PUT", "POST");
             }
         };
     }

@@ -24,7 +24,7 @@ public class SecurityConfig {
    private static final String[] WHITE_LIST_URLS = {
         "/api/leaderboards",
         "/api/userLeaderboards/{\\d+}",
-        "/api/leaderboards/getLeaderboards/{\\d+}/{\\d+}"
+        "/api/leaderboards/getLeaderboards/{\\d}/{\\d}"
    };
    
    @Value("${auth0.audience}")

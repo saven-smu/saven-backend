@@ -59,7 +59,7 @@ public class BillService {
 
     public List<BillDTO> getUserBills(final UUID user_id, final int numDays) {
         int TIMEZONE_OFFSET = 8;
-        return billRepository.findByUser_IdAndStoredDateTimeAfter(user_id, LocalDateTime.now().plusDays(TIMEZONE_OFFSET).minusDays(numDays))
+        return billRepository.findByUser_IdAndStoredDateTimeAfter(user_id, LocalDateTime.now().plusHours(TIMEZONE_OFFSET).minusDays(numDays))
                 .stream()
                 .map(bill -> mapToDTO(bill, new BillDTO()))
                 .collect(Collectors.toList());
